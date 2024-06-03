@@ -3,72 +3,74 @@ DATABASE website_sell_shoes_niceshop
 go
 use website_sell_shoes_niceshop
 
-create table NhanVien
+create table VaiTro
 (
     id        uniqueidentifier primary key,
-    manv      nvarchar(20) null,
-    hoten     nvarchar(50) null,
-    namsinh   date null,
-    chucvu    nvarchar(20) null,
-    diachi    nvarchar(100) null,
-    email     nvarchar(50) null,
-    sdt       nvarchar(10) null,
-    trangthai bit null,
+    ten      nvarchar(50) null
 )
     go
-create table KhachHang
+CREATE TABLE VaiTroTaiKhoan
 (
-    id        uniqueidentifier primary key,
-    makh      nvarchar(20) null,
-    hoten     nvarchar(50) null,
-    namsinh   date null,
-    diachi    nvarchar(100) null,
-    sdt       nvarchar(10) null,
-    email     nvarchar(50) null,
-    trangthai bit null,
-)
-    go
-create table TaiKhoan
-(
-    id           uniqueidentifier primary key,
-    id_nhanvien  uniqueidentifier,
-    id_khachhang uniqueidentifier,
-    tentaikhoan  nvarchar(50) null,
-    matkhau      nvarchar(50) null,
-    trangthai    bit,
-    foreign key (id_nhanvien) references NhanVien (id),
-    foreign key (id_khachhang) references KhachHang (id),
-)
+    id uniqueidentifier PRIMARY KEY,
+    id_taikhoan uniqueidentifier,
+    id_vaitro uniqueidentifier,
+    FOREIGN KEY (id_taikhoan) REFERENCES TaiKhoan (id),
+    FOREIGN KEY (id_vaitro) REFERENCES VaiTro (id)
+);
+GO
 
+
+CREATE Table TaiKhoan
+(
+    id UNIQUEIDENTIFIER PRIMARY KEY,
+    username NVARCHAR(30) null,
+    pass VARCHAR(50) null,
+    hoten NVARCHAR(30) null,
+    namsinh DATE null,
+    email NVARCHAR(30) null,
+    sdt NVARCHAR(30) null,
+    avatar NVARCHAR(MAX) null,
+    created_date DATE null,
+    update_date DATE null,
+    is_deleted BIT null
+)
+go
+
+create table DiaChi
+(
+	id uniqueidentifier primary key,
+	id_taikhoan uniqueidentifier,
+	phuong nvarchar(100) null,
+	quan nvarchar(100) null,
+	thanhpho nvarchar(100) null,
+	chitiet nvarchar (max) null,
+	ngaythem DATE null,
+    ngaysua DATE null,
+	foreign key(id_taikhoan) references TaiKhoan(id)
+)
+go
 create table HoaDon
 (
     id              uniqueidentifier primary key,
-    id_taikhoan     uniqueidentifier not null,
+    id_taikhoan     uniqueidentifier,
     id_phuongthuctt uniqueidentifier,
-    id_giamgia      uniqueidentifier,
+    id_diachi       uniqueidentifier,
     mahoadon        nvarchar(20) null,
-    tenkh           nvarchar(50) null,
-    tennv           nvarchar(50) null,
+    name_user		nvarchar(50) null,
+    sdt_user        nvarchar(50) null,
+	diachi_user		nvarchar(1000) null,
     tongtien        DECIMAL null,
     tienthu         DECIMAL null,
     tiengiam        DECIMAL null,
     ngaytao         datetime null,
-    trangthai       bit null,
+    trangthai       int null,
     ghichu          nvarchar( max) null,
     foreign key (id_taikhoan) references TaiKhoan (id),
     foreign key (id_phuongthuctt) references PhuongThucThanhToan (id),
-    foreign key (id_giamgia) references GiamGia (id)
+    foreign key (id_diachi) references DiaChi (id)
 )
     go
-create table LichSuHoaDon
-(
-    id        uniqueidentifier primary key,
-    id_hoadon uniqueidentifier,
-    mota      nvarchar( max) null,
-    trangthai bit null,
-    foreign key (id_hoadon) references HoaDon (id),
-)
-    go
+
 create table PhuongThucThanhToan
 (
     id           uniqueidentifier primary key,
@@ -78,14 +80,28 @@ create table PhuongThucThanhToan
     go
 create table GiamGia
 (
-    id          uniqueidentifier primary key,
-    ma          nvarchar(20) null,
-    ten         nvarchar(50) null,
-    ngaybatdau  date null,
-    ngayketthuc date null,
-    trangthai   bit null,
+    id UNIQUEIDENTIFIER PRIMARY KEY,
+    name NVARCHAR(max) null,
+    ngaytao DATETIME null,
+    ngaybatdau DATETIME null,
+    ngayketthuc DATETIME null,
+    loaivoucher int null,
+    status int null,
+    -- 1: sap dien ra, 2: dang dien ra, 3: da ket thuc, 4: ngung 
+
 )
-    go
+go
+create table GiamGiaChiTiet
+(
+    id UNIQUEIDENTIFIER PRIMARY KEY,
+    id_giamgia UNIQUEIDENTIFIER null,
+    id_sanphamct UNIQUEIDENTIFIER null,
+    giamgia int null,
+    status int null,
+    foreign key(id_giamgia) references GiamGia(id),
+    foreign key(id_sanphamct) references ChiTietSanPham(id)
+)
+go
 create table ChiTietHoaDon
 (
     id           uniqueidentifier primary key,
@@ -113,26 +129,27 @@ create table GioHang
     foreign key (id_taikhoan) references TaiKhoan (id),
 )
     go
-create table danhgia
+CREATE TABLE DanhGia
 (
-    id           uniqueidentifier primary key,
-    id_sanphamct uniqueidentifier,
-    binhluan     nvarchar(200) null,
-    diem         int null,
-    anh1         NVARCHAR( MAX) null,
-    anh2         NVARCHAR( MAX) null,
-    anh3         NVARCHAR( MAX) null,
-    foreign key (id_sanphamct) references ChiTietSanPham (id),
+    id uniqueidentifier PRIMARY KEY,  -- ID duy nhất cho mỗi đánh giá
+    id_sanphamct uniqueidentifier,      -- ID của sản phẩm được đánh giá
+    id_taikhoan uniqueidentifier,    -- ID của người dùng thực hiện đánh giá
+    danhgia INT CHECK (danhgia >= 1 AND danhgia <= 5),  -- Điểm đánh giá từ 1 đến 5
+    binhluan NVARCHAR(1000),          -- Bình luận của người dùng
+    ngay_danhgia DATETIME DEFAULT GETDATE(),  -- Ngày đánh giá, mặc định là ngày hiện tại
+    FOREIGN KEY (id_sanphamct) REFERENCES ChiTietSanPham (id),  -- Khoá ngoại tới bảng sản phẩm
+    FOREIGN KEY (id_taikhoan) REFERENCES TaiKhoan (id)  -- Khoá ngoại tới bảng người dùng
 )
-    go
+go
+
 CREATE TABLE SanPham
 (
     id      UNIQUEIDENTIFIER PRIMARY KEY,
     masp    NVARCHAR(50) NULL,
     ten     NVARCHAR(50) NULL,
-    mota    NVARCHAR( MAX) NULL,
-    them    NVARCHAR(20) NULL,
-    capnhat NVARCHAR(20) NULL
+    created_date DATE null,
+    update_date DATE null,
+    trangthai bit
 )
     GO
 
@@ -140,48 +157,48 @@ create table Size
 (
     id      uniqueidentifier primary key,
     ten     nvarchar(50) null,
-    them    nvarchar(20) null,
-    capnhat nvarchar(20) null,
+    created_date DATE null,
+    update_date DATE null,
 )
     go
 create table XuatXu
 (
     id      uniqueidentifier primary key,
     ten     nvarchar(50) null,
-    them    nvarchar(20) null,
-    capnhat nvarchar(20) null,
+    created_date DATE null,
+    update_date DATE null,
 )
     go
 create table Hang
 (
     id      uniqueidentifier primary key,
     ten     nvarchar(50) null,
-    them    nvarchar(20) null,
-    capnhat nvarchar(20) null,
+    created_date DATE null,
+    update_date DATE null,
 )
     go
 create table TheLoai
 (
     id      uniqueidentifier primary key,
     ten     nvarchar(50) null,
-    them    nvarchar(20) null,
-    capnhat nvarchar(20) null,
+    created_date DATE null,
+    update_date DATE null,
 )
     go
 create table ChatLieu
 (
     id      uniqueidentifier primary key,
     ten     nvarchar(50) null,
-    them    nvarchar(20) null,
-    capnhat nvarchar(20) null,
+    created_date DATE null,
+    update_date DATE null,
 )
     go
 create table MauSac
 (
     id      uniqueidentifier primary key,
     ten     nvarchar(50) null,
-    them    nvarchar(20) null,
-    capnhat nvarchar(20) null,
+    created_date DATE null,
+    update_date DATE null,
 )
     go
 create table Anh
@@ -204,7 +221,7 @@ create table ChiTietSanPham
     id_hang     uniqueidentifier,
     giaban      DECIMAL null,
     gianhap     DECIMAL null,
-    soluongton  int null,
+    soluongton  BIGINT null,
     mota        nvarchar( max) null,
     trangthai   bit null,
     foreign key (id_sanpham) references SanPham (id),
