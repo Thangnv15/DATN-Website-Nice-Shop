@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/DATN-Website-Nice-Shop.iml" filepath="$PROJECT_DIR$/.idea/DATN-Website-Nice-Shop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DA/niceshop.iml" filepath="$PROJECT_DIR$/DA/niceshop.iml" />
+    </modules>
+  </component>
+</project>
