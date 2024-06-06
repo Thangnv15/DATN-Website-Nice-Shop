@@ -9,16 +9,6 @@ create table VaiTro
     ten      nvarchar(50) null
 )
     go
-CREATE TABLE VaiTroTaiKhoan
-(
-    id uniqueidentifier PRIMARY KEY,
-    id_taikhoan uniqueidentifier,
-    id_vaitro uniqueidentifier,
-    FOREIGN KEY (id_taikhoan) REFERENCES TaiKhoan (id),
-    FOREIGN KEY (id_vaitro) REFERENCES VaiTro (id)
-);
-GO
-
 
 CREATE Table TaiKhoan
 (
@@ -34,21 +24,31 @@ CREATE Table TaiKhoan
     update_date DATE null,
     is_deleted BIT null
 )
-go
+    go
+CREATE TABLE VaiTroTaiKhoan
+(
+    id uniqueidentifier PRIMARY KEY,
+    id_taikhoan uniqueidentifier,
+    id_vaitro uniqueidentifier,
+    FOREIGN KEY (id_taikhoan) REFERENCES TaiKhoan (id),
+    FOREIGN KEY (id_vaitro) REFERENCES VaiTro (id)
+);
+GO
+
 
 create table DiaChi
 (
-	id uniqueidentifier primary key,
-	id_taikhoan uniqueidentifier,
-	phuong nvarchar(100) null,
-	quan nvarchar(100) null,
-	thanhpho nvarchar(100) null,
-	chitiet nvarchar (max) null,
-	ngaythem DATE null,
+    id uniqueidentifier primary key,
+    id_taikhoan uniqueidentifier,
+    phuong nvarchar(100) null,
+    quan nvarchar(100) null,
+    thanhpho nvarchar(100) null,
+    chitiet nvarchar (max) null,
+    ngaythem DATE null,
     ngaysua DATE null,
-	foreign key(id_taikhoan) references TaiKhoan(id)
+    foreign key(id_taikhoan) references TaiKhoan(id)
 )
-go
+    go
 create table HoaDon
 (
     id              uniqueidentifier primary key,
@@ -58,7 +58,7 @@ create table HoaDon
     mahoadon        nvarchar(20) null,
     name_user		nvarchar(50) null,
     sdt_user        nvarchar(50) null,
-	diachi_user		nvarchar(1000) null,
+    diachi_user		nvarchar(1000) null,
     tongtien        DECIMAL null,
     tienthu         DECIMAL null,
     tiengiam        DECIMAL null,
@@ -87,60 +87,10 @@ create table GiamGia
     ngayketthuc DATETIME null,
     loaivoucher int null,
     status int null,
-    -- 1: sap dien ra, 2: dang dien ra, 3: da ket thuc, 4: ngung 
+    -- 1: sap dien ra, 2: dang dien ra, 3: da ket thuc, 4: ngung
 
 )
-go
-create table GiamGiaChiTiet
-(
-    id UNIQUEIDENTIFIER PRIMARY KEY,
-    id_giamgia UNIQUEIDENTIFIER null,
-    id_sanphamct UNIQUEIDENTIFIER null,
-    giamgia int null,
-    status int null,
-    foreign key(id_giamgia) references GiamGia(id),
-    foreign key(id_sanphamct) references ChiTietSanPham(id)
-)
-go
-create table ChiTietHoaDon
-(
-    id           uniqueidentifier primary key,
-    id_hoadon    uniqueidentifier,
-    id_sanphamct uniqueidentifier,
-    soluong      int null,
-    dongia       DECIMAL null,
-    tongtien     DECIMAL null,
-    ghichu       nvarchar( max),
-    trangthai    bit null,
-    foreign key (id_hoadon) references HoaDon (id),
-    foreign key (id_sanphamct) references ChiTietSanPham (id),
-)
     go
-create table GioHang
-(
-    id           uniqueidentifier primary key,
-    id_sanphamct uniqueidentifier,
-    id_taikhoan  uniqueidentifier,
-    sanpham      nvarchar(50) null,
-    soluong      int null,
-    dongia       DECIMAL null,
-    tongtien     DECIMAL null,
-    foreign key (id_sanphamct) references ChiTietSanPham (id),
-    foreign key (id_taikhoan) references TaiKhoan (id),
-)
-    go
-CREATE TABLE DanhGia
-(
-    id uniqueidentifier PRIMARY KEY,  -- ID duy nhất cho mỗi đánh giá
-    id_sanphamct uniqueidentifier,      -- ID của sản phẩm được đánh giá
-    id_taikhoan uniqueidentifier,    -- ID của người dùng thực hiện đánh giá
-    danhgia INT CHECK (danhgia >= 1 AND danhgia <= 5),  -- Điểm đánh giá từ 1 đến 5
-    binhluan NVARCHAR(1000),          -- Bình luận của người dùng
-    ngay_danhgia DATETIME DEFAULT GETDATE(),  -- Ngày đánh giá, mặc định là ngày hiện tại
-    FOREIGN KEY (id_sanphamct) REFERENCES ChiTietSanPham (id),  -- Khoá ngoại tới bảng sản phẩm
-    FOREIGN KEY (id_taikhoan) REFERENCES TaiKhoan (id)  -- Khoá ngoại tới bảng người dùng
-)
-go
 
 CREATE TABLE SanPham
 (
@@ -231,5 +181,55 @@ create table ChiTietSanPham
     foreign key (id_xuatxu) references XuatXu (id),
     foreign key (id_theloai) references TheLoai (id),
     foreign key (id_hang) references Hang (id),
+)
+    go
+create table GiamGiaChiTiet
+(
+    id UNIQUEIDENTIFIER PRIMARY KEY,
+    id_giamgia UNIQUEIDENTIFIER null,
+    id_sanphamct UNIQUEIDENTIFIER null,
+    giamgia int null,
+    status int null,
+    foreign key(id_giamgia) references GiamGia(id),
+    foreign key(id_sanphamct) references ChiTietSanPham(id)
+)
+    go
+create table ChiTietHoaDon
+(
+    id           uniqueidentifier primary key,
+    id_hoadon    uniqueidentifier,
+    id_sanphamct uniqueidentifier,
+    soluong      int null,
+    dongia       DECIMAL null,
+    tongtien     DECIMAL null,
+    ghichu       nvarchar( max),
+    trangthai    bit null,
+    foreign key (id_hoadon) references HoaDon (id),
+    foreign key (id_sanphamct) references ChiTietSanPham (id),
+)
+    go
+create table GioHang
+(
+    id           uniqueidentifier primary key,
+    id_sanphamct uniqueidentifier,
+    id_taikhoan  uniqueidentifier,
+    sanpham      nvarchar(50) null,
+    soluong      int null,
+    dongia       DECIMAL null,
+    tongtien     DECIMAL null,
+    foreign key (id_sanphamct) references ChiTietSanPham (id),
+    foreign key (id_taikhoan) references TaiKhoan (id),
+)
+    go
+CREATE TABLE DanhGia
+(
+    id uniqueidentifier PRIMARY KEY,  -- ID duy nhất cho mỗi đánh giá
+    id_sanphamct uniqueidentifier,      -- ID của sản phẩm được đánh giá
+    id_taikhoan uniqueidentifier,    -- ID của người dùng thực hiện đánh giá
+    danhgia INT CHECK (danhgia >= 1 AND danhgia <= 5),  -- Điểm đánh giá từ 1 đến 5
+    binhluan NVARCHAR(1000),          -- Bình luận của người dùng
+    ngay_danhgia DATETIME DEFAULT GETDATE(),  -- Ngày đánh giá, mặc định là ngày hiện tại
+    FOREIGN KEY (id_sanphamct) REFERENCES ChiTietSanPham (id),  -- Khoá ngoại tới bảng sản phẩm
+    FOREIGN KEY (id_taikhoan) REFERENCES TaiKhoan (id)  -- Khoá ngoại tới bảng người dùng
 )
     go
