@@ -20,7 +20,7 @@ CREATE Table TaiKhoan
     email NVARCHAR(30) null,
     sdt NVARCHAR(30) null,
     avatar NVARCHAR(MAX) null,
-    created_date DATE null,
+    created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
     is_deleted BIT null
 )
@@ -44,9 +44,16 @@ create table DiaChi
     quan nvarchar(100) null,
     thanhpho nvarchar(100) null,
     chitiet nvarchar (max) null,
-    ngaythem DATE null,
+    created_date DATE DEFAULT GETDATE(),
     ngaysua DATE null,
     foreign key(id_taikhoan) references TaiKhoan(id)
+)
+    go
+create table PhuongThucThanhToan
+(
+    id           uniqueidentifier primary key,
+    phuongthuctt nvarchar(50) null,
+    mota         nvarchar(100) null,
 )
     go
 create table HoaDon
@@ -62,7 +69,7 @@ create table HoaDon
     tongtien        DECIMAL null,
     tienthu         DECIMAL null,
     tiengiam        DECIMAL null,
-    ngaytao         datetime null,
+    created_date DATE DEFAULT GETDATE(),
     trangthai       int null,
     ghichu          nvarchar( max) null,
     foreign key (id_taikhoan) references TaiKhoan (id),
@@ -71,13 +78,7 @@ create table HoaDon
 )
     go
 
-create table PhuongThucThanhToan
-(
-    id           uniqueidentifier primary key,
-    phuongthuctt nvarchar(50) null,
-    mota         nvarchar(100) null,
-)
-    go
+
 create table GiamGia
 (
     id UNIQUEIDENTIFIER PRIMARY KEY,
@@ -97,7 +98,7 @@ CREATE TABLE SanPham
     id      UNIQUEIDENTIFIER PRIMARY KEY,
     masp    NVARCHAR(50) NULL,
     ten     NVARCHAR(50) NULL,
-    created_date DATE null,
+    created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
     trangthai bit
 )
@@ -107,7 +108,7 @@ create table Size
 (
     id      uniqueidentifier primary key,
     ten     nvarchar(50) null,
-    created_date DATE null,
+    created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
 )
     go
@@ -115,7 +116,7 @@ create table XuatXu
 (
     id      uniqueidentifier primary key,
     ten     nvarchar(50) null,
-    created_date DATE null,
+    created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
 )
     go
@@ -123,7 +124,7 @@ create table Hang
 (
     id      uniqueidentifier primary key,
     ten     nvarchar(50) null,
-    created_date DATE null,
+    created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
 )
     go
@@ -131,7 +132,7 @@ create table TheLoai
 (
     id      uniqueidentifier primary key,
     ten     nvarchar(50) null,
-    created_date DATE null,
+    created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
 )
     go
@@ -139,7 +140,7 @@ create table ChatLieu
 (
     id      uniqueidentifier primary key,
     ten     nvarchar(50) null,
-    created_date DATE null,
+    created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
 )
     go
@@ -147,7 +148,7 @@ create table MauSac
 (
     id      uniqueidentifier primary key,
     ten     nvarchar(50) null,
-    created_date DATE null,
+    created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
 )
     go
