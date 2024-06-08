@@ -6,6 +6,7 @@ use website_sell_shoes_niceshop
 create table VaiTro
 (
     id        uniqueidentifier primary key,
+    ma       nvarchar (50),
     ten      nvarchar(50) null
 )
     go
@@ -13,6 +14,7 @@ create table VaiTro
 CREATE Table TaiKhoan
 (
     id UNIQUEIDENTIFIER PRIMARY KEY,
+    ma nvarchar (50),
     username NVARCHAR(30) null,
     pass VARCHAR(50) null,
     hoten NVARCHAR(30) null,
@@ -40,6 +42,7 @@ create table DiaChi
 (
     id uniqueidentifier primary key,
     id_taikhoan uniqueidentifier,
+    ma nvarchar (50),
     phuong nvarchar(100) null,
     quan nvarchar(100) null,
     thanhpho nvarchar(100) null,
@@ -52,6 +55,7 @@ create table DiaChi
 create table PhuongThucThanhToan
 (
     id           uniqueidentifier primary key,
+    ma nvarchar (50),
     phuongthuctt nvarchar(50) null,
     mota         nvarchar(100) null,
 )
@@ -62,7 +66,7 @@ create table HoaDon
     id_taikhoan     uniqueidentifier,
     id_phuongthuctt uniqueidentifier,
     id_diachi       uniqueidentifier,
-    mahoadon        nvarchar(20) null,
+    ma              nvarchar (50),
     name_user		nvarchar(50) null,
     sdt_user        nvarchar(50) null,
     diachi_user		nvarchar(1000) null,
@@ -82,7 +86,8 @@ create table HoaDon
 create table GiamGia
 (
     id UNIQUEIDENTIFIER PRIMARY KEY,
-    name NVARCHAR(max) null,
+    ma nvarchar (50),
+    ten NVARCHAR(max) null,
     ngaytao DATETIME null,
     ngaybatdau DATETIME null,
     ngayketthuc DATETIME null,
@@ -107,6 +112,7 @@ CREATE TABLE SanPham
 create table Size
 (
     id      uniqueidentifier primary key,
+    ma nvarchar (50),
     ten     nvarchar(50) null,
     created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
@@ -115,6 +121,7 @@ create table Size
 create table XuatXu
 (
     id      uniqueidentifier primary key,
+    ma nvarchar (50),
     ten     nvarchar(50) null,
     created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
@@ -123,6 +130,7 @@ create table XuatXu
 create table Hang
 (
     id      uniqueidentifier primary key,
+    ma nvarchar (50),
     ten     nvarchar(50) null,
     created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
@@ -131,6 +139,7 @@ create table Hang
 create table TheLoai
 (
     id      uniqueidentifier primary key,
+    ma nvarchar (50),
     ten     nvarchar(50) null,
     created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
@@ -139,6 +148,7 @@ create table TheLoai
 create table ChatLieu
 (
     id      uniqueidentifier primary key,
+    ma nvarchar (50),
     ten     nvarchar(50) null,
     created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
@@ -147,19 +157,13 @@ create table ChatLieu
 create table MauSac
 (
     id      uniqueidentifier primary key,
+    ma nvarchar (50),
     ten     nvarchar(50) null,
     created_date DATE DEFAULT GETDATE(),
     update_date DATE null,
 )
     go
-create table Anh
-(
-    id           uniqueidentifier primary key,
-    id_sanphamct uniqueidentifier,
-    anh          nvarchar( max) null,
-    foreign key (id_sanphamct) references ChiTietSanPham (id),
-)
-    go
+
 create table ChiTietSanPham
 (
     id          uniqueidentifier primary key,
@@ -182,6 +186,14 @@ create table ChiTietSanPham
     foreign key (id_xuatxu) references XuatXu (id),
     foreign key (id_theloai) references TheLoai (id),
     foreign key (id_hang) references Hang (id),
+)
+    go
+create table Anh
+(
+    id           uniqueidentifier primary key,
+    id_sanphamct uniqueidentifier,
+    anh          nvarchar( max) null,
+    foreign key (id_sanphamct) references ChiTietSanPham (id),
 )
     go
 create table GiamGiaChiTiet
@@ -214,6 +226,7 @@ create table GioHang
     id           uniqueidentifier primary key,
     id_sanphamct uniqueidentifier,
     id_taikhoan  uniqueidentifier,
+    ma nvarchar (50),
     sanpham      nvarchar(50) null,
     soluong      int null,
     dongia       DECIMAL null,
