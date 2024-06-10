@@ -1,0 +1,37 @@
+.footer {
+    background-color: #f8f9fa;
+    padding: 50px 0;
+    color: #333;
+}
+
+.footer h4 {
+    color: #555;
+}
+
+.footer p {
+    margin-bottom: 15px;
+}
+
+.footer ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.footer ul li {
+    margin-bottom: 10px;
+}
+
+.footer ul li a {
+    color: #555;
+    text-decoration: none;
+}
+
+.footer ul li a:hover {
+    color: #007bff;
+}
+
+@media (max-width: 768px) {
+    .footer .container {
+        text-align: center;
+    }
+}
