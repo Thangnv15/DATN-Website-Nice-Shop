@@ -15,8 +15,8 @@ import java.util.UUID;
 @Table(name = "VaiTroTaiKhoan")
 public class VaiTroTK {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     @ManyToOne
     @JoinColumn(name = "id_taikhoan")
     private TaiKhoan taiKhoan;

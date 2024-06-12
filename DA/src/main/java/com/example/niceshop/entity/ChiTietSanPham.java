@@ -1,11 +1,6 @@
 package com.example.niceshop.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +21,34 @@ public class ChiTietSanPham {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "id_sanpham")
+    private SanPham sanPham;
+
+    @ManyToOne
+    @JoinColumn(name = "id_size")
+    private Size size;
+
+    @ManyToOne
+    @JoinColumn(name = "id_mausac")
+    private MauSac mauSac;
+
+    @ManyToOne
+    @JoinColumn(name = "id_chatlieu")
+    private ChatLieu chatLieu;
+
+    @ManyToOne
+    @JoinColumn(name = "id_xuatxu")
+    private XuatXu xuatXu;
+
+    @ManyToOne
+    @JoinColumn(name = "id_theloai")
+    private TheLoai theLoai;
+
+    @ManyToOne
+    @JoinColumn(name = "id_hang")
+    private Hang hang;
 
     @Column(name = "giaban")
     private BigDecimal giaBan;
@@ -48,4 +71,5 @@ public class ChiTietSanPham {
         }
         return "Không còn dùng";
     }
+
 }

@@ -20,7 +20,7 @@ menuBar.addEventListener('click', () => {
 const searchBtn = document.querySelector('.content_index nav form .form-input button');
 const searchBtnIcon = document.querySelector('.content_index nav form .form-input button .bx');
 const searchForm = document.querySelector('.content_index nav form');
-
+var myapp = angular.module('adminapp',["ngRoute"]);
 window.addEventListener('resize', () => {
     if (window.innerWidth < 768) {
         sideBar.classList.add('close');
